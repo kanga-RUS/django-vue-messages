@@ -11,7 +11,7 @@ class MessagesListView(generics.ListAPIView):
     serializer_class = MessageSerializer
 
     def get_queryset(self):
-        queryset = Message.objects.all().order_by('-date').filter(status=False)
+        queryset = Message.objects.filter(status=False).order_by('-date')
         id_message = self.request.query_params.get('last_id', None)
         if id_message is not None:
             queryset = queryset.filter(id__gt=id_message)
@@ -25,7 +25,7 @@ class MessageUpdateView(generics.RetrieveUpdateAPIView):
     serializer_class = MessageSerializer
 
     def get_queryset(self):
-        queryset = Message.objects.all().filter(status=False)
+        queryset = Message.objects.filter(status=False)
         id_message = self.request.query_params.get('id', None)
         if id_message is not None:
             queryset = get_object_or_404(Message, id=id_message)
